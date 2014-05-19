@@ -1,16 +1,16 @@
-setwd("/Users/matthew/RProject")
+setwd("/Users/matthew/repos/Getting-and-Cleaning-Data-Course-Project")
 library(plyr)
 # import raw data files
 # assumes download file is already 'unzipped' in R working directory"
-subject_test <- read.table("./test/subject_test.txt")
-X_test <- read.table("./test/X_test.txt")
-y_test <- read.table("./test/y_test.txt")
-subject_train <- read.table("./train/subject_train.txt")
-X_train <- read.table("./train/X_train.txt")
-y_train <- read.table("./train/y_train.txt")
+subject_test <- read.table("./UCI HAR Dataset/test/subject_test.txt")
+X_test <- read.table("./UCI HAR Dataset/test/X_test.txt")
+y_test <- read.table("./UCI HAR Dataset/test/y_test.txt")
+subject_train <- read.table("./UCI HAR Dataset/train/subject_train.txt")
+X_train <- read.table("./UCI HAR Dataset/train/X_train.txt")
+y_train <- read.table("./UCI HAR Dataset/train/y_train.txt")
 
 # import features.txt which lists the column headings
-features <- read.table("features.txt")
+features <- read.table("./UCI HAR Dataset/features.txt")
 
 # Select only data columns containing '-mean()' or '-std()' in features:
 # NOTE specifically excluded features with 'Mean' as they are
