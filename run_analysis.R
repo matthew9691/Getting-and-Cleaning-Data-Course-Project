@@ -1,7 +1,12 @@
-setwd("/Users/matthew/repos/Getting-and-Cleaning-Data-Course-Project")
+# R Script for compiling and tidying data as part of
+# Peer Reviewed Course Project for
+# coursera Getting and Cleaning Data Short Course
+# May 2014
 library(plyr)
+library(data.table)
+
 # import raw data files
-# assumes download file is already 'unzipped' in R working directory"
+# assumes downloaded data file is already 'unzipped' into R working directory
 subject_test <- read.table("./UCI HAR Dataset/test/subject_test.txt")
 X_test <- read.table("./UCI HAR Dataset/test/X_test.txt")
 y_test <- read.table("./UCI HAR Dataset/test/y_test.txt")
@@ -12,9 +17,10 @@ y_train <- read.table("./UCI HAR Dataset/train/y_train.txt")
 # import features.txt which lists the column headings
 features <- read.table("./UCI HAR Dataset/features.txt")
 
-# Select only data columns containing '-mean()' or '-std()' in features:
-# NOTE specifically excluded features with 'Mean' as they are
-# derived measurements not the mean or std of actual measurements
+# Select only data columns containing '-mean()' or '-std()':
+# NOTE I have specifically excluded features with 'Mean' as they are
+# derived measurements and not the mean or std of actual measurements
+# which is how I interpret the requirement 2 of the project
 X_test <- X_test[,grep("mean\\()|std\\()",features$V2)]  
 X_train <- X_train[,grep("mean\\()|std\\()",features$V2)] 
 
@@ -48,4 +54,18 @@ colnames(subject_combined) <- c("Subject")
 data_complete <- cbind(subject_combined,data_yX)
 data_complete <- arrange(data_complete,Activity)
 data_complete <- arrange(data_complete,Subject)
+
+# Combine Subject and Activity into a combined identifier
+Subject.Activity <- interaction(data_complete$Subject,data_complete$Activity)
+data_complete <- cbind(Subject.Activity,data_complete[,3:68])
+
+# Calculate mean of groups by combinations of Subject and Activity
+data_complete2 <- data.table(data_complete)
+data_complete3 <- data_complete2[, lapply(.SD, mean), by = Subject.Activity]
+
+# Seperate back out the Subject and Activity into different columns
+tidy_data <- 
+
+write.table(tidy_data, file = "tidy_data.txt", quote=FALSE)
+
 
