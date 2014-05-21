@@ -62,10 +62,20 @@ data_complete <- cbind(Subject.Activity,data_complete[,3:68])
 # Calculate mean of groups by combinations of Subject and Activity
 data_complete2 <- data.table(data_complete)
 data_complete3 <- data_complete2[, lapply(.SD, mean), by = Subject.Activity]
+data_complete4 <- as.data.frame(data_complete3)
 
-# Seperate back out the Subject and Activity into different columns
-tidy_data <- 
+# Seperate back out the Subject and Activity into different columns to satisfy
+# one of the tidy data requirements
+SA.List <- strsplit(as.character(data_complete4[,1]),".",fixed=TRUE) 
+Subject <- sapply(SA.List, "[[", 1)
+Activity <- sapply(SA.List, "[[", 2)
 
-write.table(tidy_data, file = "tidy_data.txt", quote=FALSE)
+# Combine all columns into final dataset 
+tidy_data <- cbind(Subject,Activity,data_complete4[,2:67])
 
+# Simplify the column label text to remove duplicatation and extra characters
+names(tidy_data) <- gsub("BodyBody","Body",names(tidy_data),)
+names(tidy_data) <- gsub("\\()","",names(tidy_data),)
 
+# Write tidy data to file:
+write.table(tidy_data, file = "tidy_data.txt", quote=FALSE, row.names = FALSE)
