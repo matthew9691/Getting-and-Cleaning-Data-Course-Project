@@ -12,6 +12,7 @@ Further information on the raw data can be found here:
 #####Compilation and filtering
 The raw data contains 561 columns of measurements this was reduced to 66 by selecting only mean and standard deviations of each measurement. Other measurement of mean in the raw data set were all means of derived values and so were not included in tidy data set.
 Also included for each range of measures was the subject and the activity.
+Columns headings of measurements were only slightly modified to improve readability, parentheses and duplicate wording was removed.
 This resulted in a tidy data set with 68 columns: 
 
 |    | names.tidy_data.      |
